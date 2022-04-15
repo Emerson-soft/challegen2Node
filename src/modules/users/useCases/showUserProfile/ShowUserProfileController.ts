@@ -6,9 +6,13 @@ class ShowUserProfileController {
   constructor(private showUserProfileUseCase: ShowUserProfileUseCase) {}
 
   handle(request: Request, response: Response): Response {
-    const { user_id } = request.params;
-    const user = this.showUserProfileUseCase.execute({ user_id });
-    return response.status(200).json(user);
+    try {
+      const { user_id } = request.params;
+      const user = this.showUserProfileUseCase.execute({ user_id });
+      return response.status(200).json(user);
+    } catch (err) {
+      return response.status(404).json({ error: "don't exist user" });
+    }
   }
 }
 
